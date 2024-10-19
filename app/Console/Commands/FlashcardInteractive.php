@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\Services\FlashcardService;
 use App\Services\FlashcardPracticeService;
 use App\Services\MenuService;
-use Validator;
+
 use App\Enums\FlashcardPracticeStatus;
 
 class FlashcardInteractive extends Command
@@ -81,19 +81,13 @@ class FlashcardInteractive extends Command
         $question = $this->ask('Enter the question');
         $answer = $this->ask('Enter the answer');
 
-        $validator = Validator::make(compact('question', 'answer'), [
-            'question' => 'required',
-            'answer' => 'required',
-        ]);
+        $status = $this->flashcardService->createFlashcard($question, $answer);
 
-        if ($validator->fails()) {
-            $this->error($validator->errors()->first());
-            return;
+        if ($status['success']) {
+            $this->info('Flashcard created successfully.');
+        } else {
+            $this->error($status['message']);
         }
-
-        $this->flashcardService->createFlashcard(compact('question', 'answer'));
-
-        $this->info('Flashcard created successfully.');
     }
 
     private function _listFlashcards()
