@@ -16,7 +16,7 @@ namespace App\Services;
 use App\Enums\MenuItem;
 
 /**
- * FlashcardService class
+ * MenuService class
  *
  * This class is to manage menu and menu items
  *
@@ -29,6 +29,11 @@ use App\Enums\MenuItem;
 class MenuService
 {
 
+    /**
+     * Returns the list of menu items
+     * 
+     * @return string[]
+     */
     public function getMenu()
     {
         return [

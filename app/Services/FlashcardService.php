@@ -35,11 +35,12 @@ class FlashcardService
     /**
      * Create flashcard record
      * 
-     * @param array $data with keys question and answer
+     * @param string|null $question flashcard question
+     * @param string|null $answer   flashcard answer
      * 
      * @return array
      */
-    public function createFlashcard(string $question, string $answer): array
+    public function createFlashcard(string|null $question, string|null $answer): array
     {
         $validator = Validator::make(
             compact('question', 'answer'),

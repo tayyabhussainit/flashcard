@@ -33,6 +33,7 @@ class FlashcardPractice extends Model
 
     /**
      * Fillable columns
+     * 
      * @var array
      */
     protected $fillable = ['flashcard_id', 'answer', 'status', 'user_id'];

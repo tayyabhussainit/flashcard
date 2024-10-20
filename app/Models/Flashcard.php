@@ -33,6 +33,7 @@ class Flashcard extends Model
 
     /**
      * Fillable columns
+     * 
      * @var array
      */
     protected $fillable = ['question', 'answer'];

@@ -38,6 +38,7 @@ class FlashcardPracticeTest extends TestCase
 
     /**
      * Test case for flashcard practice data
+     *
      * @return void
      */
     public function test_get_flashcards_practice(): void
@@ -54,6 +55,7 @@ class FlashcardPracticeTest extends TestCase
 
     /**
      * Test case for saving flashcard practice
+     *
      * @return void
      */
     public function test_save_flashcard_practice(): void
@@ -81,6 +83,7 @@ class FlashcardPracticeTest extends TestCase
 
     /**
      * Test case for reset practice practice data
+     *
      * @return void
      */
     public function test_reset_practice(): void
@@ -101,6 +104,7 @@ class FlashcardPracticeTest extends TestCase
 
     /**
      * Test case for practice data stats
+     *
      * @return void
      */
     public function test_stats()
@@ -129,9 +133,9 @@ class FlashcardPracticeTest extends TestCase
     /**
      * Helper function to generate practice data with flashcards
      * 
-     * @param int $count count of flashcards
+     * @param int    $count  count of flashcards
      * @param string $status correct or incorrect
-     * @param int $userId user id
+     * @param int    $userId user id
      * 
      * @return void
      */

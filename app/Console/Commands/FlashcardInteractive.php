@@ -32,7 +32,6 @@ use App\Enums\MenuItem;
  * @license  https://github.com/tayyabhussainit Private Repo
  * @link     https://github.com/tayyabhussainit/flashcard
  */
-use Illuminate\Support\Facades\Log;
 class FlashcardInteractive extends Command
 {
 
@@ -79,6 +78,11 @@ class FlashcardInteractive extends Command
      */
     public function handle(): void
     {
+        $argUserId = $this->argument('user_id');
+        if (!is_numeric($argUserId) || intval($argUserId) != $argUserId) {
+            $this->error('user_id must be an integer');
+            return;
+        }
         $this->_userId = $this->argument('user_id');
         $this->_openMenu();
     }
@@ -97,27 +101,27 @@ class FlashcardInteractive extends Command
             );
 
             switch ($choice) {
-                case MenuItem::CREATE_FLASHCARD->value:
-                    $this->_createFlashcard();
-                    break;
-                case MenuItem::LIST_FLASHCARD->value:
-                    $this->_listFlashcards();
-                    break;
-                case MenuItem::PRACTICE->value:
-                    $this->_practice();
-                    break;
-                case MenuItem::STATS->value:
-                    $this->_stats();
-                    break;
-                case MenuItem::RESET->value:
-                    $this->_reset();
-                    break;
-                case MenuItem::EXIT->value:
-                    $this->_exit();
-                    return;
-                default:
-                    $this->_exit();
-                    return;
+            case MenuItem::CREATE_FLASHCARD->value:
+                $this->_createFlashcard();
+                break;
+            case MenuItem::LIST_FLASHCARD->value:
+                $this->_listFlashcards();
+                break;
+            case MenuItem::PRACTICE->value:
+                $this->_practice();
+                break;
+            case MenuItem::STATS->value:
+                $this->_stats();
+                break;
+            case MenuItem::RESET->value:
+                $this->_reset();
+                break;
+            case MenuItem::EXIT->value:
+                $this->_exit();
+                return;
+            default:
+                $this->_exit();
+                return;
             }
         }
     }

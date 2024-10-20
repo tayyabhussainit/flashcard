@@ -48,13 +48,13 @@ class FlashcardPracticeService
                     ->where('flashcard_practices.user_id', '=', $userId);
             }
         )->select(
-                'flashcards.id',
-                'flashcards.question',
-                'flashcards.answer',
-                'flashcard_practices.answer as user_answer',
-                'flashcard_practices.status',
-                'flashcard_practices.user_id'
-            )->get();
+            'flashcards.id',
+            'flashcards.question',
+            'flashcards.answer',
+            'flashcard_practices.answer as user_answer',
+            'flashcard_practices.status',
+            'flashcard_practices.user_id'
+        )->get();
     }
 
     /**

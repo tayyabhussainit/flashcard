@@ -31,7 +31,12 @@ use App\Services\MenuService;
 class MenuTest extends TestCase
 {
 
-    public function test_get_menu_options()
+    /**
+     * Test case to load all menu 
+     * 
+     * @return void
+     */
+    public function test_get_menu_options(): void
     {
         $menuService = new MenuService();
         $options = $menuService->getMenu();
