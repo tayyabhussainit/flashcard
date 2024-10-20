@@ -76,7 +76,7 @@ class FlashcardPracticeService
                 'user_id' => $userId
             ],
             [
-                'answer' => $userAnswer,
+                'answer' => e($userAnswer),
                 'status' => $status
             ]
         );

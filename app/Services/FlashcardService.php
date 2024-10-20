@@ -54,7 +54,7 @@ class FlashcardService
             $status['success'] = false;
             $status['message'] = $validator->errors()->first();
         } else {
-            $status['flashcard'] = Flashcard::create(compact('question', 'answer'));
+            $status['flashcard'] = Flashcard::create(['question' => e($question), 'answer' => e($answer)]);
         }
 
         return $status;
