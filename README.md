@@ -13,8 +13,10 @@ This repo has the following branches:
 ### Branch Hierarchy:
 - main -> clean-up -> interactive-command
 
-## Branches
+## Pull Request
 A Pull Request has been created from `interactive-command` to `clean-up` for easy code review.
+
+[PR](https://github.com/tayyabhussainit/flashcard/pull/1)
 
 ## Solution Details
 
@@ -163,4 +165,6 @@ To ensure code quality, PHP Code Sniffer was used to check the code for any viol
       ./vendor/bin/phpcs -v app/Enums/
       ```
 
+## Screenshots
 
+Screenshots of the commands, tests and schema exists in screenshots folder at root
