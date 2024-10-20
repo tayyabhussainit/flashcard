@@ -129,14 +129,4 @@ class FlashcardPracticeTest extends TestCase
         $this->assertEquals($stats['correct'], 4);
         $this->assertEquals($stats['attempted'], 8);
     }
-
-    /**
-     * Helper function to generate practice data with flashcards
-     * 
-     * @param int    $count  count of flashcards
-     * @param string $status correct or incorrect
-     * @param int    $userId user id
-     * 
-     * @return void
-     */
 }

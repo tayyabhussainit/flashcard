@@ -18,7 +18,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Services\FlashcardService;
 use App\Models\Flashcard;
-use App\Models\FlashcardPractice;
 use App\Enums\FlashcardPracticeStatus;
 use App\Enums\MenuItem;
 use Tests\Helpers\TestHelperTrait;
