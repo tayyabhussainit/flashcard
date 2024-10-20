@@ -1,14 +1,45 @@
 <?php
 
+/**
+ * FlashcardPracticeService class file
+ *
+ * PHP Version 8.3
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
+
 namespace App\Services;
 
 use App\Models\Flashcard;
 use App\Models\FlashcardPractice;
 use App\Enums\FlashcardPracticeStatus;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * FlashcardPracticeService class
+ *
+ * This class is to keep the business logic related to flashcard practice
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
 class FlashcardPracticeService
 {
-    public function getFlashcardsPractice($userId)
+    /**
+     * Function to get flashcard practice data against a user
+     * 
+     * @param int $userId To get user specific information
+     * 
+     * @return Collection
+     */
+    public function getFlashcardsPractice(int $userId): Collection
     {
         return Flashcard::leftJoin(
             'flashcard_practices',
@@ -26,7 +57,17 @@ class FlashcardPracticeService
             )->get();
     }
 
-    public function saveFlashcarPractice($flashcard_id, $user_answer, $userId, $status)
+    /**
+     * Function to save flashcard practice against a user
+     * 
+     * @param int        $flashcard_id To get user specific information
+     * @param int|string $user_answer  user input answer
+     * @param int        $userId       user id
+     * @param string     $status       status of flashcard practice
+     * 
+     * @return void
+     */
+    public function saveFlashcarPractice(int $flashcard_id, string $user_answer, int $userId, string $status): void
     {
 
         FlashcardPractice::updateOrCreate(
@@ -41,7 +82,14 @@ class FlashcardPracticeService
         );
     }
 
-    public function footerProgress($flashcards)
+    /**
+     * Function to flashcard practice progress
+     * 
+     * @param Collection $flashcards flashcards collection
+     * 
+     * @return int correct questions percentage
+     */
+    public function footerProgress(Collection $flashcards): float
     {
         $total = $flashcards->count();
         $correctCount = $flashcards->where('status', FlashcardPracticeStatus::CORRECT->value)->count();
@@ -49,25 +97,48 @@ class FlashcardPracticeService
         return ($correctCount / $total) * 100;
     }
 
-    public function preparePracticeTableData($flashcards)
+    /**
+     * Function to prepate dataset for practice table
+     * 
+     * @param Collection $flashcards flashcards collection
+     * 
+     * @return array practice data
+     */
+    public function preparePracticeTableData($flashcards): array
     {
-        return $flashcards->map(function ($flashcard) {
-            return [
-                'id' => $flashcard->id,
-                'question' => $flashcard->question,
-                'answer' => $flashcard->user_answer,
-                'status' => is_null($flashcard->status) ? FlashcardPracticeStatus::NOT_ANSWERED->value : $flashcard->status,
-            ];
-        })->toArray();
+        return $flashcards->map(
+            function ($flashcard): array {
+                return [
+                    'id' => $flashcard->id,
+                    'question' => $flashcard->question,
+                    'answer' => $flashcard->user_answer,
+                    'status' => is_null($flashcard->status) ? FlashcardPracticeStatus::NOT_ANSWERED->value : $flashcard->status,
+                ];
+            }
+        )->toArray();
 
     }
 
-    public function resetPractice($userId)
+    /**
+     * Function to delete user practice data
+     * 
+     * @param int $userId user information
+     * 
+     * @return void
+     */
+    public function resetPractice(int $userId): void
     {
         FlashcardPractice::where('user_id', $userId)->delete();
     }
 
-    public function getStats($userId)
+    /**
+     * Function to get stats of user practice
+     * 
+     * @param int $userId user information
+     * 
+     * @return array stats
+     */
+    public function getStats(int $userId): array
     {
 
         $flashcards = $this->getFlashcardsPractice($userId);

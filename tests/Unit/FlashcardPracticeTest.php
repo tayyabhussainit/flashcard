@@ -1,8 +1,19 @@
 <?php
 
+/**
+ * FlashcardPracticeTest class file
+ *
+ * PHP Version 8.3
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
+
 namespace Tests\Unit;
 
-// use PHPUnit\Framework\TestCase; ERROR
 use Tests\TestCase;
 use App\Models\Flashcard;
 use App\Models\FlashcardPractice;
@@ -10,11 +21,26 @@ use App\Services\FlashcardPracticeService;
 use App\Enums\FlashcardPracticeStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * FlashcardPracticeTest class
+ *
+ * This class contains test cases related to flashcard practice
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
 class FlashcardPracticeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_get_flashcards_practice()
+    /**
+     * Test case for flashcard practice data
+     * @return void
+     */
+    public function test_get_flashcards_practice(): void
     {
         $userId = 1;
 
@@ -26,7 +52,11 @@ class FlashcardPracticeTest extends TestCase
         $this->assertCount(3, $flashcards);
     }
 
-    public function test_save_flashcard_practice()
+    /**
+     * Test case for saving flashcard practice
+     * @return void
+     */
+    public function test_save_flashcard_practice(): void
     {
         $userId = 1;
         $flashcard = Flashcard::factory()->create();
@@ -49,7 +79,11 @@ class FlashcardPracticeTest extends TestCase
         );
     }
 
-    public function test_reset_practice()
+    /**
+     * Test case for reset practice practice data
+     * @return void
+     */
+    public function test_reset_practice(): void
     {
         $userId = 1;
         $flashcard = Flashcard::factory()->create();
@@ -65,6 +99,10 @@ class FlashcardPracticeTest extends TestCase
         $this->assertDatabaseMissing('flashcard_practices', ['user_id' => $userId]);
     }
 
+    /**
+     * Test case for practice data stats
+     * @return void
+     */
     public function test_stats()
     {
         $userId = 1;
@@ -73,7 +111,7 @@ class FlashcardPracticeTest extends TestCase
         $this->_addFlashcardsWithPractice(4, FlashcardPracticeStatus::INCORRECT->value, $userId);
 
         //not answered
-        $flashcards = Flashcard::factory()->count(2)->create();
+        Flashcard::factory()->count(2)->create();
 
         $flashcardPracticeService = new FlashcardPracticeService();
         $stats = $flashcardPracticeService->getStats($userId);
@@ -88,7 +126,16 @@ class FlashcardPracticeTest extends TestCase
         $this->assertEquals($stats['attempted'], 8);
     }
 
-    private function _addFlashcardsWithPractice($count, $status, $userId)
+    /**
+     * Helper function to generate practice data with flashcards
+     * 
+     * @param int $count count of flashcards
+     * @param string $status correct or incorrect
+     * @param int $userId user id
+     * 
+     * @return void
+     */
+    private function _addFlashcardsWithPractice(int $count, string $status, int $userId): void
     {
         $flashcards = Flashcard::factory()->count($count)->create();
 

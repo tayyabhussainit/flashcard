@@ -1,18 +1,53 @@
 <?php
 
+/**
+ * FlashcardService class file
+ *
+ * PHP Version 8.3
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
+
 namespace App\Services;
 
 use App\Models\Flashcard;
 use Validator;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * FlashcardService class
+ *
+ * This class is to keep the business logic related to flashcards
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
 class FlashcardService
 {
-    public function createFlashcard($question, $answer)
+
+    /**
+     * Create flashcard record
+     * 
+     * @param array $data with keys question and answer
+     * 
+     * @return array
+     */
+    public function createFlashcard(string $question, string $answer): array
     {
-        $validator = Validator::make(compact('question', 'answer'), [
-            'question' => 'required',
-            'answer' => 'required',
-        ]);
+        $validator = Validator::make(
+            compact('question', 'answer'),
+            [
+                'question' => 'required',
+                'answer' => 'required',
+            ]
+        );
         $status['success'] = true;
         if ($validator->fails()) {
             $status['success'] = false;
@@ -24,7 +59,12 @@ class FlashcardService
         return $status;
     }
 
-    public function getFlashcards()
+    /**
+     * Get flashcard records
+     * 
+     * @return Collection
+     */
+    public function getFlashcards(): Collection
     {
         return Flashcard::all(['id', 'question', 'answer']);
     }

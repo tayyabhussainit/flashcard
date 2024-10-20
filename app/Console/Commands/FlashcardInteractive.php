@@ -1,14 +1,38 @@
 <?php
 
+/**
+ * FlashcardInteractive class file
+ *
+ * PHP Version 8.3
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\FlashcardService;
 use App\Services\FlashcardPracticeService;
 use App\Services\MenuService;
-
 use App\Enums\FlashcardPracticeStatus;
+use App\Enums\MenuItem;
 
+/**
+ * FlashcardInteractive class
+ *
+ * The class to manage flashcard command operations with user interaction
+ *
+ * @category Class
+ * @package  Console_Command
+ * @author   Tayyab <tayyab.hussain.it@gmail.com>
+ * @license  https://github.com/tayyabhussainit Private Repo
+ * @link     https://github.com/tayyabhussainit/flashcard
+ */
+use Illuminate\Support\Facades\Log;
 class FlashcardInteractive extends Command
 {
 
@@ -26,8 +50,20 @@ class FlashcardInteractive extends Command
      */
     protected $description = 'Command description';
 
-    private $_userId;
+    /**
+     * Command argument userId 
+     * 
+     * @var integer
+     */
+    private int $_userId;
 
+    /**
+     * Constructor
+     * 
+     * @param FlashcardService $flashcardService         FlashcardService injected
+     * @param FlashcardService $flashcardPracticeService FlashcardPracticeService injected
+     * @param FlashcardService $menuService              MenuService injected
+     */
     public function __construct(
         private FlashcardService $flashcardService,
         private FlashcardPracticeService $flashcardPracticeService,
@@ -36,13 +72,23 @@ class FlashcardInteractive extends Command
         parent::__construct();
     }
 
-    public function handle()
+    /**
+     * Execute the console command.
+     * 
+     * @return void
+     */
+    public function handle(): void
     {
-        $this->_user_id = $this->argument('user_id');
+        $this->_userId = $this->argument('user_id');
         $this->_openMenu();
     }
 
-    private function _openMenu()
+    /**
+     * Open menu for interactive command
+     * 
+     * @return void
+     */
+    private function _openMenu(): void
     {
         while (true) {
             $choice = $this->choice(
@@ -51,22 +97,22 @@ class FlashcardInteractive extends Command
             );
 
             switch ($choice) {
-                case MenuService::OPTION_CREATE_FLASHCARD:
+                case MenuItem::CREATE_FLASHCARD->value:
                     $this->_createFlashcard();
                     break;
-                case MenuService::OPTION_LIST_FLASHCARD:
+                case MenuItem::LIST_FLASHCARD->value:
                     $this->_listFlashcards();
                     break;
-                case MenuService::OPTION_PRACTICE:
+                case MenuItem::PRACTICE->value:
                     $this->_practice();
                     break;
-                case MenuService::OPTION_STATS:
+                case MenuItem::STATS->value:
                     $this->_stats();
                     break;
-                case MenuService::OPTION_RESET:
-                    $this->reset();
+                case MenuItem::RESET->value:
+                    $this->_reset();
                     break;
-                case MenuService::OPTION_EXIT:
+                case MenuItem::EXIT->value:
                     $this->_exit();
                     return;
                 default:
@@ -76,7 +122,12 @@ class FlashcardInteractive extends Command
         }
     }
 
-    private function _createFlashcard()
+    /**
+     * Menu option to create flashcard
+     * 
+     * @return void
+     */
+    private function _createFlashcard(): void
     {
         $question = $this->ask('Enter the question');
         $answer = $this->ask('Enter the answer');
@@ -90,7 +141,12 @@ class FlashcardInteractive extends Command
         }
     }
 
-    private function _listFlashcards()
+    /**
+     * Menu option to list flashcards
+     * 
+     * @return void
+     */
+    private function _listFlashcards(): void
     {
         $flashcards = $this->flashcardService->getFlashcards();
         if ($flashcards->count() === 0) {
@@ -100,9 +156,14 @@ class FlashcardInteractive extends Command
         $this->table(['ID', 'Question', 'Answer'], $flashcards->toArray());
     }
 
-    private function _practice()
+    /**
+     * Menu option to practice flashcards
+     * 
+     * @return void
+     */
+    private function _practice(): void
     {
-        $userId = $this->_user_id;
+        $userId = $this->_userId;
 
         $flashcards = $this->flashcardPracticeService->getFlashcardsPractice($userId);
 
@@ -119,9 +180,9 @@ class FlashcardInteractive extends Command
         $correctPercentage = $this->flashcardPracticeService->footerProgress($flashcards);
         $this->info("Correct percentage: $correctPercentage");
 
-        $flashcard_id = $this->ask('Please enter the Flashcard ID to answer');
+        $flashcardId = $this->ask('Please enter the Flashcard ID to answer');
 
-        $flashcard = $flashcards->firstWhere('id', $flashcard_id);
+        $flashcard = $flashcards->firstWhere('id', $flashcardId);
 
         if (!$flashcard) {
             $this->error('Invalid flashcard ID');
@@ -133,29 +194,39 @@ class FlashcardInteractive extends Command
             return;
         }
 
-        $user_answer = $this->ask('Please enter your answer');
-        if (empty($user_answer)) {
+        $userAnswer = $this->ask('Please enter your answer');
+        if (empty($userAnswer)) {
             $this->error('Answer cannot be empty.');
             return;
         }
 
-        $status = ($user_answer == $flashcard->answer) ? FlashcardPracticeStatus::CORRECT->value : FlashcardPracticeStatus::INCORRECT->value;
+        $status = ($userAnswer == $flashcard->answer) ? FlashcardPracticeStatus::CORRECT->value : FlashcardPracticeStatus::INCORRECT->value;
 
-        $this->flashcardPracticeService->saveFlashcarPractice($flashcard_id, $user_answer, $userId, $status);
+        $this->flashcardPracticeService->saveFlashcarPractice($flashcardId, $userAnswer, $userId, $status);
 
         $this->info("Your answer is: $status");
     }
 
-    private function reset()
+    /**
+     * Menu option to reset flashcards practice
+     * 
+     * @return void
+     */
+    private function _reset(): void
     {
-        $userId = $this->_user_id;
+        $userId = $this->_userId;
         $this->flashcardPracticeService->resetPractice($userId);
         $this->info('Reset Done');
     }
 
-    private function _stats()
+    /**
+     * Menu option to show practice stats
+     * 
+     * @return void
+     */
+    private function _stats(): void
     {
-        $userId = $this->_user_id;
+        $userId = $this->_userId;
         $stats = $this->flashcardPracticeService->getStats($userId);
 
         $this->info('Total Flashcards: ' . $stats['total']);
@@ -163,7 +234,12 @@ class FlashcardInteractive extends Command
         $this->info('Correct Answers: ' . $stats['correct'] . ' (' . $stats['correct_percentage'] . '%)');
     }
 
-    private function _exit()
+    /**
+     * Menu option to exit the command
+     * 
+     * @return void
+     */
+    private function _exit(): void
     {
         $this->info('Exiting');
     }
