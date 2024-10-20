@@ -80,12 +80,12 @@ Two tables are created for the flashcard functionality:
     ```
     Reference: https://laravel.com/docs/11.x/sail#installing-composer-dependencies-for-existing-projects
 
-5. **Start the project using WSL**:
+5. **Start the project using WSL (required for setup on windows)**:
     ```bash
     wsl -d ubuntu
     ```
 
-6. **Go to the project directory (inside WSL)**.
+6. **Go to the project directory (inside WSL, required for setup on windows)**.
 
 7. **Start the Docker containers**:
     ```bash
