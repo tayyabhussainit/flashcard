@@ -62,8 +62,8 @@ class FlashcardPracticeService
      * 
      * @param int        $flashcardId To get user specific information
      * @param int|string $userAnswer  user input answer
-     * @param int        $userId       user id
-     * @param string     $status       status of flashcard practice
+     * @param int        $userId      user id
+     * @param string     $status      status of flashcard practice
      * 
      * @return void
      */

@@ -60,7 +60,7 @@ Two tables are created for the flashcard functionality:
 
 1. **Clone the repository**:
     ```bash
-    git clone git clone git@github.com:tayyabhussainit/flashcard.git
+    git clone git@github.com:tayyabhussainit/flashcard.git
     cd flashcard
     ```
 
@@ -126,6 +126,10 @@ To run the test cases, "testing" database must be created:
 
 ```bash
 mysql> CREATE DATABASE testing;
+```
+
+```bash
+mysql> exit
 ```
 
 ```bash
