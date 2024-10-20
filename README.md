@@ -38,6 +38,12 @@ The primary feature of this repository is a Laravel console command that manages
 - `app/Enums/MenuItem.php`
 - `app/Enums/FlashcardPracticeStatus.php`
 
+### Tests
+- `tests/Feature/FlashcardCommandTest.php`
+- `tests/Unit/FlashcardPracticeTest.php`
+- `tests/Unit/FlashcardTest.php`
+- `tests/Unit/MenuTest.php`  
+
 ### Migrations
 - Database migration files are located in `database/migrations`.
 
