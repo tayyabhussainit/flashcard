@@ -60,23 +60,23 @@ class FlashcardPracticeService
     /**
      * Function to save flashcard practice against a user
      * 
-     * @param int        $flashcard_id To get user specific information
-     * @param int|string $user_answer  user input answer
+     * @param int        $flashcardId To get user specific information
+     * @param int|string $userAnswer  user input answer
      * @param int        $userId       user id
      * @param string     $status       status of flashcard practice
      * 
      * @return void
      */
-    public function saveFlashcarPractice(int $flashcard_id, string $user_answer, int $userId, string $status): void
+    public function saveFlashcarPractice(int $flashcardId, string $userAnswer, int $userId, string $status): void
     {
 
         FlashcardPractice::updateOrCreate(
             [
-                'flashcard_id' => $flashcard_id,
+                'flashcard_id' => $flashcardId,
                 'user_id' => $userId
             ],
             [
-                'answer' => $user_answer,
+                'answer' => $userAnswer,
                 'status' => $status
             ]
         );

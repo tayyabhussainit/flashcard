@@ -16,10 +16,10 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Flashcard;
-use App\Models\FlashcardPractice;
 use App\Services\FlashcardPracticeService;
 use App\Enums\FlashcardPracticeStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\TestHelperTrait;
 
 /**
  * FlashcardPracticeTest class
@@ -34,7 +34,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class FlashcardPracticeTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, TestHelperTrait;
 
     /**
      * Test case for flashcard practice data
@@ -45,7 +45,7 @@ class FlashcardPracticeTest extends TestCase
     {
         $userId = 1;
 
-        $this->_addFlashcardsWithPractice(3, FlashcardPracticeStatus::CORRECT->value, $userId);
+        $this->addFlashcardsWithPractice(3, FlashcardPracticeStatus::CORRECT->value, $userId);
 
         $flashcardPracticeService = new FlashcardPracticeService();
         $flashcards = $flashcardPracticeService->getFlashcardsPractice($userId);
@@ -111,8 +111,8 @@ class FlashcardPracticeTest extends TestCase
     {
         $userId = 1;
 
-        $this->_addFlashcardsWithPractice(4, FlashcardPracticeStatus::CORRECT->value, $userId);
-        $this->_addFlashcardsWithPractice(4, FlashcardPracticeStatus::INCORRECT->value, $userId);
+        $this->addFlashcardsWithPractice(4, FlashcardPracticeStatus::CORRECT->value, $userId);
+        $this->addFlashcardsWithPractice(4, FlashcardPracticeStatus::INCORRECT->value, $userId);
 
         //not answered
         Flashcard::factory()->count(2)->create();
@@ -139,19 +139,4 @@ class FlashcardPracticeTest extends TestCase
      * 
      * @return void
      */
-    private function _addFlashcardsWithPractice(int $count, string $status, int $userId): void
-    {
-        $flashcards = Flashcard::factory()->count($count)->create();
-
-        foreach ($flashcards as $flashcard) {
-            FlashcardPractice::factory()->create(
-                [
-                    'flashcard_id' => $flashcard->id,
-                    'user_id' => $userId,
-                    'answer' => $flashcard->answer,
-                    'status' => $status
-                ]
-            );
-        }
-    }
 }

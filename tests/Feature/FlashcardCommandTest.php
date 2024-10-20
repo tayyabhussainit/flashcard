@@ -21,6 +21,7 @@ use App\Models\Flashcard;
 use App\Models\FlashcardPractice;
 use App\Enums\FlashcardPracticeStatus;
 use App\Enums\MenuItem;
+use Tests\Helpers\TestHelperTrait;
 
 /**
  * FlashcardCommandTest class
@@ -35,7 +36,7 @@ use App\Enums\MenuItem;
  */
 class FlashcardCommandTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, TestHelperTrait;
 
     /**
      * Test case for flashcard creation via command
@@ -102,15 +103,7 @@ class FlashcardCommandTest extends TestCase
     public function test_reset_flashcard_practice_command(): void
     {
         $userId = 1;
-        $flashcard = Flashcard::factory()->create();
-        FlashcardPractice::factory()->create(
-            [
-                'flashcard_id' => $flashcard->id,
-                'answer' => $flashcard->answer,
-                'user_id' => $userId,
-                'status' => FlashcardPracticeStatus::CORRECT->value
-            ]
-        );
+        $this->addFlashcardsWithPractice(3, FlashcardPracticeStatus::CORRECT->value, $userId);
 
         $this->artisan('flashcard:interactive ' . $userId)
             ->expectsQuestion('Select Menu', 'Reset')

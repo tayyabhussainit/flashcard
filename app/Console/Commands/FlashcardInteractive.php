@@ -24,7 +24,7 @@ use App\Enums\MenuItem;
 /**
  * FlashcardInteractive class
  *
- * The class to manage flashcard command operations with user interaction
+ * This class is to manage flashcard command operations with user interaction
  *
  * @category Class
  * @package  Console_Command
@@ -47,7 +47,7 @@ class FlashcardInteractive extends Command
      *
      * @var string  
      */
-    protected $description = 'Command description';
+    protected $description = 'Flashcard interactive command';
 
     /**
      * Command argument userId 
